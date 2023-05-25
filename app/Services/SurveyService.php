@@ -92,4 +92,10 @@ class SurveyService
 
         return array_merge($results, $additionalData);
     }
+
+    public function getAnswers()
+    {
+        $surveys = $this->all();
+        return $this->formatter->formatSurveyForDashboard($surveys);
+    }
 }
