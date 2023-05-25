@@ -16,9 +16,8 @@ class SearchController extends Controller
 
     public function search(SearchRequest $request)
     {
-        $name = $request->input('name');
-        $code = $request->input('code');
-        $surveys = $this->searchService->searchSurveys($name, $code);
+        $term = $request->input('term');
+        $surveys = $this->searchService->searchSurveys($term);
 
         return response()->json($surveys);
     }
