@@ -31,4 +31,9 @@ class SurveyController extends Controller
         $surveys = $this->surveyService->all();
         return response()->json($surveys);
     }
+
+    public function getAggregatedData($code)
+    {
+        return $this->surveyService->getAggregatedData($code);
+    }
 }
