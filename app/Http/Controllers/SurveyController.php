@@ -28,7 +28,7 @@ class SurveyController extends Controller
 
     public function getAnswers()
     {
-        $surveys = $this->surveyService->all();
+        $surveys = $this->surveyService->getAnswers();
         return response()->json($surveys);
     }
 

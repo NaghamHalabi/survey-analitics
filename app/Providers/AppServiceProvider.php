@@ -37,9 +37,9 @@ class AppServiceProvider extends ServiceProvider
             return $surveyRepository;
         });
 
-        $this->app->bind(SearchService::class, function ($app) {
-            return new SearchService($app->make(SurveyRepository::class));
-        });
+        // $this->app->bind(SearchService::class, function ($app) {
+        //     return new SearchService($app->make(SurveyRepository::class));
+        // });
 
         app()->singleton(QcmQuestion::class);
         app()->singleton(NumericQuestion::class);
