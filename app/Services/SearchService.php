@@ -3,18 +3,21 @@
 namespace App\Services;
 
 use App\Repositories\SurveyRepository;
+use App\Http\Formatters\SurveyFormatter;
 
 class SearchService
 {
     private $surveyRepository;
+    protected $surveyFormatter;
     private $searchableFields = [
         'name' => 'name',
         'code' => 'code',
     ];
 
-    public function __construct(SurveyRepository $surveyRepository)
+    public function __construct(SurveyRepository $surveyRepository, SurveyFormatter $surveyFormatter)
     {
         $this->surveyRepository = $surveyRepository;
+        $this->surveyFormatter = $surveyFormatter;
     }
 
     public function searchSurveys($term)
@@ -24,8 +27,7 @@ class SearchService
         $surveys = $surveys->filter(function ($survey) use ($term, $searchableFields) {
             return $this->isSearchTermMatching($survey, $term, $searchableFields);
         });
-
-        return $surveys;
+        return $this->surveyFormatter->formatSurveyForDashboard($surveys);
     }
 
     private function isSearchTermMatching($survey, $term, $searchableFields)
