@@ -23,4 +23,53 @@ class SurveyFormatter implements FormatterInterface
         }
         return $list;
     }
+
+    public function formatSurveyForDashboard($surveys)
+    {
+        $formattedSurveys = [];
+
+        foreach ($surveys as $survey) {
+            $formattedSurvey = $this->formatData($survey);
+            $formattedSurveys[] = $formattedSurvey;
+        }
+
+        return $formattedSurveys;
+    }
+
+    public function formatData($data) {
+        $formattedData = [
+            'survey' => $data['survey'],
+            'questions' => []
+        ];
+
+        foreach ($data['questions'] as $question) {
+          $formattedQuestion = [
+            'label' => $question['label'],
+            'answer' => $this->getFormattedAnswer($question)
+          ];
+
+          $formattedData['questions'][] = $formattedQuestion;
+        }
+
+        return $formattedData;
+      }
+
+    private function getFormattedAnswer($question) {
+        if ($question['type'] === 'qcm') {
+            $selectedOptions = [];
+
+            foreach ($question['options'] as $key => $option) {
+                if (isset($question['answer'][$key]) && $question['answer'][$key]) {
+                    $selectedOptions[] = $option;
+                }
+            }
+
+            return $selectedOptions;
+        } else if ($question['type'] === 'numeric') {
+            return $question['answer'];
+        }
+    }
 }
+
+
+
