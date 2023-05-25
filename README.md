@@ -1,1 +1,1 @@
-# survey-analitics
+# survey-analytics
