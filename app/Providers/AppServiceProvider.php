@@ -10,6 +10,15 @@ use App\Repositories\{
     SurveyRepository
 };
 
+use App\Questions\{
+    QuestionRegistry,
+    QcmQuestion,
+    NumberQuestion,
+    DateQuestion
+};
+use App\Services\{
+    SearchService
+};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +37,20 @@ class AppServiceProvider extends ServiceProvider
             return $surveyRepository;
         });
 
+        $this->app->bind(SearchService::class, function ($app) {
+            return new SearchService($app->make(SurveyRepository::class));
+        });
+
+        app()->singleton(QcmQuestion::class);
+        app()->singleton(NumericQuestion::class);
+
+        app()->singleton(QuestionRegistry::class, function ($app) {
+            $registry = new QuestionRegistry();
+            $registry->register('qcm', app(QcmQuestion::class));
+            $registry->register('numeric', app(NumberQuestion::class));
+            $registry->register('date', app(DateQuestion::class));
+            return $registry;
+        });
     }
 
     /**
