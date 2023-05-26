@@ -4,15 +4,11 @@ namespace App\Services;
 
 use App\Repositories\SurveyRepository;
 use App\Http\Formatters\SurveyFormatter;
-
+use Illuminate\Support\Facades\Config;
 class SearchService
 {
     private $surveyRepository;
     protected $surveyFormatter;
-    private $searchableFields = [
-        'name' => 'name',
-        'code' => 'code',
-    ];
 
     public function __construct(SurveyRepository $surveyRepository, SurveyFormatter $surveyFormatter)
     {
@@ -22,7 +18,8 @@ class SearchService
 
     public function searchSurveys($term)
     {
-        $searchableFields = $this->searchableFields;
+        $searchableFields = Config::get('search.searchableFields');
+
         $surveys = $this->surveyRepository->all();
         $surveys = $surveys->filter(function ($survey) use ($term, $searchableFields) {
             return $this->isSearchTermMatching($survey, $term, $searchableFields);
@@ -38,7 +35,9 @@ class SearchService
             if (isset($survey['survey'][$key])) {
                 $fieldValue = strtolower($survey['survey'][$key]);
 
-                return $fieldValue === $termLowercase;
+                if ($fieldValue === $termLowercase) {
+                    return true;
+                }
             }
         }
 
