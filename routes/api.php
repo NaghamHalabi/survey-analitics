@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::middleware('cors')->group(function () {
     Route::get('list.json', [SurveyController::class, 'show']);
     Route::get('/search', [SearchController::class, 'search']);
+    Route::get('/answers', [SurveyController::class, 'getAnswers']);
+    Route::get('/{code}.json', [SurveyController::class, 'getAggregatedData']);
 });
 
 

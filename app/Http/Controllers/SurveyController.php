@@ -16,13 +16,24 @@ class SurveyController extends Controller
 
     public function find($code)
     {
-        return $this->surveyService->find($code);
+        $surveys = $this->surveyService->find($code);
+        return response()->json($surveys);
     }
 
     public function show()
     {
         $surveys = $this->surveyService->show();
-        return $surveys;
-        //return response()->json($surveys);
+        return response()->json($surveys);
+    }
+
+    public function getAnswers()
+    {
+        $surveys = $this->surveyService->getAnswers();
+        return response()->json($surveys);
+    }
+
+    public function getAggregatedData($code)
+    {
+        return $this->surveyService->getAggregatedData($code);
     }
 }
